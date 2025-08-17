@@ -16,16 +16,17 @@ cd backend
 npm install
 ```
 
-3. Configure environment variables:
-   - Copy `.env.example` to `.env`:
+3. Configure Env:
+   - Environment Variables:
    ```bash
-   cp .env.example .env
+   PORT=
+   OBS_PASSWORD=""
+   OBS_HOST=
+   OBS_PORT=
    ```
-   - Update the `.env` file with your configuration (e.g., OBS WebSocket password).
-
-4. Start the backend server:
+4. Start server:
 ```bash
-npm start
+using start with frontend
 ```
 
 ## Usage

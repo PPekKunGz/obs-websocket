@@ -1,17 +1,20 @@
 const WebSocket = require('ws');
 const OBSWebSocket = require('obs-websocket-js').default;
 const obs = new OBSWebSocket();
+require('dotenv').config();
+
 
 // สร้างคิวสำหรับเก็บข้อความ (object {id, message})
 const messageQueue = [];
 let isProcessing = false;
 
-const wss = new WebSocket.Server({ port: 8080 });
+const wss = new WebSocket.Server({ port: process.env.PORT || 8080 });
+
 
 // เชื่อมต่อกับ OBS WebSocket
 async function connectToOBS() {
     try {
-        await obs.connect('ws://localhost:4455', ''); // ถ้ามีรหัสผ่าน ให้ใส่ที่นี่
+        await obs.connect(`ws://${process.env.OBS_HOST}:${process.env.OBS_PORT}`, process.env.OBS_PASSWORD); // ถ้ามีรหัสผ่าน ให้ใส่ที่นี่
         console.log('Connected to OBS WebSocket');
     } catch (error) {
         console.error('Failed to connect to OBS:', error);
@@ -97,4 +100,4 @@ wss.on('connection', (ws) => {
     });
 });
 
-console.log('WebSocket server running on ws://localhost:8080');
+console.log(`WebSocket server running on ws://${process.env.OBS_HOST}:${process.env.PORT || 8080}`);

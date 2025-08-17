@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ส่งข้อความไป OBS</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        #messageInput { padding: 10px; width: 300px; }
+        #sendButton { padding: 10px; }
+        #messages { margin-top: 20px; }
+    </style>
+</head>
+<body>
+    <h1>ส่งข้อความไป OBS</h1>
+    <input type="text" id="messageInput" placeholder="พิมพ์ข้อความที่นี่..." />
+    <button id="sendButton" onclick="sendMessage()">ส่ง</button>
+    <div id="messages"></div>
+
+    <script>
+        const socket = new WebSocket('ws://localhost:8080');
+
+        socket.onopen = () => {
+            console.log('Connected to WebSocket server');
+        };
+
+        socket.onmessage = (event) => {
+            const messagesDiv = document.getElementById('messages');
+            const message = document.createElement('div');
+            message.textContent = event.data;
+            messagesDiv.appendChild(message);
+        };
+
+        socket.onclose = () => {
+            console.log('Disconnected from WebSocket server');
+        };
+
+        function sendMessage() {
+            const input = document.getElementById('messageInput');
+            const message = input.value;
+            if (message) {
+                socket.send(message);
+                input.value = '';
+            }
+        }
+    </script>
+</body>
+</html>
